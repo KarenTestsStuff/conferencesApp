@@ -26,14 +26,17 @@ Express server listening on http://0.0.0.0:9000, in development mode
 ```
 
 If you choose to generate the authentication API, you can start to play with it.
+
 > Note that creating and authenticating users needs a master key (which is defined in the `.env` file)
 
 Create a user (sign up):
+
 ```bash
 curl -X POST http://0.0.0.0:9000/users -i -d "email=test@example.com&password=123456&access_token=MASTER_KEY_HERE"
 ```
 
 It will return something like:
+
 ```bash
 HTTP/1.1 201 Created
 ...
@@ -47,11 +50,13 @@ HTTP/1.1 201 Created
 ```
 
 Authenticate the user (sign in):
+
 ```bash
 curl -X POST http://0.0.0.0:9000/auth -i -u test@example.com:123456 -d "access_token=MASTER_KEY_HERE"
 ```
 
 It will return something like:
+
 ```bash
 HTTP/1.1 201 Created
 ...
@@ -114,3 +119,30 @@ This is the entry file of the API. It defines the routes using, along other midd
 ### services/
 
 Here you can put `helpers`, `libraries` and other types of modules which you want to use in your APIs.
+
+---
+
+### THIS SPACE IS FOR KAREN TO SUBMIT AND SHARE FINDINGS IN THE ACTIVITIES PORTION OF THE COURSE https://www.ministryoftesting.com/dojo/courses/improving-your-testing-through-operability WITH ASH WINTER.
+
+Application Setup Chapter:
+Activity 1
+Explore the application to discover:
+
+Which of the applications endpoints need admin user privileges to use them.
+
+1. Create Conferences - auth_token
+2. Update Conference by Id - auth_token
+3. Create User - master_token
+4. Authenticate User - master_token
+5. Get Current User from Token - auth_token
+6. Get All Users As Admin - admin_auth_token
+7. Create Admin User - master_token
+8. Authenticate Admin User - master_token
+9. Create Speaker - auth_token
+10. Create Session - auth_token
+
+Which endpoints don’t need a token.
+
+1. Retrieve All Conferences - access token is unchecked
+2. Get Conference By Id - access token is unchecked
+3. Delete Conference By Id - access token is unchecked
