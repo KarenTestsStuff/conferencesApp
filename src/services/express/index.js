@@ -16,6 +16,9 @@ export default (apiRoot, routes) => {
     app.use(compression())
   }
 
+  app.use(morgan('tiny'))
+
+
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
   app.use(apiRoot, routes)
