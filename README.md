@@ -146,3 +146,26 @@ Which endpoints don’t need a token.
 1. Retrieve All Conferences - access token is unchecked
 2. Get Conference By Id - access token is unchecked
 3. Delete Conference By Id - access token is unchecked
+
+
+Event Logging Chapter:
+Activity 1 
+Review the application to identify 3 events for these categories:
+ 1-Application events (things we can control)
+ 2-Integration events (what do we depend on)
+ 3-Domain events (things outside of our control)
+ 
+Application
+1. Delete user
+2. Create a conference
+3. Sign in
+
+Integration
+1. MongoDB
+2. Passport
+3. jwt
+
+Domain
+1. Parking garage cell signal
+2. Airplane mode
+3. Age of mobile/desktop device
