@@ -14,6 +14,7 @@ import { env } from '../../config'
 export default (apiRoot, routes) => {
   const app = express();
   const logDirectory = path.join(__dirname, 'logs');
+  const eventLookup = require('./eventLookup');
   const accessLogStream = rfs('access.log', {
     interval: '5d',
     path: logDirectory
@@ -29,7 +30,12 @@ export default (apiRoot, routes) => {
     return generateSafeId();
   });
 
+  morgan.token('eventName', function getEventName(req, res){
+    return eventLookup.setEventName(req.originalUrl, req.method, res.statusCode)
+  });
+
   const format = json({
+    event: ':eventName',
     short: ':id :method :url :status',
     length: ':res[content-length]',
     responseTime: ':response-time ms'
