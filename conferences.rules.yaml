@@ -1,11 +1,37 @@
 groups:
-- name: conferences.rules
-  rules:
-  - alert: InstanceDown
-    expr: up == 0
-    for: 1m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Instance {{$labels.instance}} down"
-      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than 1 minute."
+  - name: conferences.rules
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{$labels.instance}} down"
+          description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than 1 minute."
+      - alert: 401 Status Codes
+        expr: count ({code="401"}) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "401 Status Codes"
+          description: "job {{$labels.job}} has returned 401 errors."
+
+      # Symptom Based alert for any endpoint where the request takes longer than 200 ms
+      - alert: APIHighRequestTime
+        expr: api_metrics_http_request_duration_seconds_sum > 0.2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request time on {{$labels.instance}}"
+          description: "{{$labels.instance}} has a request duration above 200ms (current value: {{$value}}s)"
+
+      # Cause based alert for open http connections
+      - alert: WebServerOpenConnections
+        expr: expressjs_number_of_open_connections > 5
+        for: 10m
+        annotations:
+          summary: "High number of open connections {{$labels.instance}}"
+          description: "{{$labels.instance}} has a high number of open http connections (current value: {{$value}}s)"

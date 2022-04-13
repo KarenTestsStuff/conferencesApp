@@ -15,6 +15,7 @@ export default (apiRoot, routes) => {
   const app = express();
   const logDirectory = path.join(__dirname, 'logs');
   const eventLookup = require('./eventLookup');
+  const apiMetrics = require('prometheus-api-metrics');
   const accessLogStream = rfs('access.log', {
     interval: '5d',
     path: logDirectory
@@ -44,6 +45,12 @@ export default (apiRoot, routes) => {
   app.use(morgan(format, {stream: accessLogStream}));
   app.use(morgan(format));
 
+  app.use(apiMetrics({
+    metricsPrefix: 'api_metrics',
+    durationBuckets: [0.001, 0.005, 0.015, 0.1, 0.2, 0.5],
+    requestSizeBuckets: [5, 10, 25, 50, 100, 500, 1000, 5000, 10000],
+    responseSizeBuckets: [5, 10, 25, 50, 100, 500, 1000, 5000, 10000]
+  }));
 
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
